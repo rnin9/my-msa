@@ -19,7 +19,6 @@
     "baseUrl": "src",
     "paths": {
       "@users/*": ["features/users/*"],
-      "@tokens/*": ["features/tokens/*"],
       "@auth/*": ["features/auth/*"],
       "@shared/*": ["shared/*"]
     }
