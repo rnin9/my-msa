@@ -13,7 +13,7 @@ export class InternalGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const req: Request = context.switchToHttp().getRequest();
-    const token = req.headers['x-internal-kms'];
+    const token = req.headers['authorization'];
 
     if (typeof token !== 'string') {
       throw new InternalServerErrorException('Missing internal KMS header');
