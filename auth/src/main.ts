@@ -9,9 +9,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // DTO에 없는 프로퍼티 자동 제거
-      forbidNonWhitelisted: true, // 허용하지 않은 프로퍼티가 있으면 에러 발생
-      transform: true, // 요청 파라미터를 DTO 클래스로 변환
+      whitelist: true, // DTO에 없는 속성 제거
+      forbidNonWhitelisted: true, // DTO에 없는 속성 있으면 에러 발생
+      transform: true, // 요청 객체 자동 변환 (string -> number 등)
+      errorHttpStatusCode: 400,
     }),
   );
 
