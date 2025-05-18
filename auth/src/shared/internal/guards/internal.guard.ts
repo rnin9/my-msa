@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { InternalService } from '@shared/internal/internal.service';
@@ -16,11 +16,11 @@ export class InternalGuard implements CanActivate {
     const token = req.headers['x-internal-kms'];
 
     if (typeof token !== 'string') {
-      throw new UnauthorizedException('Missing internal KMS header');
+      throw new InternalServerErrorException('Missing internal KMS header');
     }
 
     if (!this.internalAuthService.isValidKmsToken(token)) {
-      throw new UnauthorizedException('Invalid internal KMS token');
+      throw new InternalServerErrorException('Invalid internal KMS token');
     }
 
     return true;

@@ -1,4 +1,3 @@
-// src/shared/internal/internal-auth.service.ts
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
