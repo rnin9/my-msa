@@ -35,12 +35,12 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET || 'yourSecretKey',
-      expiresIn: '1h',
+      expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'yourRefreshSecretKey',
-      expiresIn: '7d',
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     });
 
     return { accessToken, refreshToken };
