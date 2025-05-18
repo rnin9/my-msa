@@ -34,12 +34,12 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET || 'yourSecretKey',
+      secret: process.env.JWT_SECRET,
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET || 'yourRefreshSecretKey',
+      secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     });
 
@@ -59,7 +59,7 @@ export class AuthService {
   verifyToken(token: string): boolean {
     try {
       this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET || 'yourSecretKey',
+        secret: process.env.JWT_SECRET,
       });
       return true;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
