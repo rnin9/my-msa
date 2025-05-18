@@ -25,8 +25,7 @@ export class UsersService {
       });
 
       return await createdUser.save();
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    } catch (error: any) {
       if (error.code === 11000) {
         throw new ConflictException(
           '해당 이메일로 가입된 사용자가 이미 존재합니다.',

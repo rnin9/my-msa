@@ -6,14 +6,17 @@ import {
   HttpStatus,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from '@auth/auth.service';
 import { SignInDto } from '@auth/dto/request/sign-in.dto';
 import { AuthRequest } from '@shared/interface/auth-request.interface';
 import { AuthUser } from '@shared/interface/auth-user.interface';
 import { SignInResponseDto } from '@auth/dto/response/sign-in-response.dto';
+import { InternalGuard } from '@shared/internal/guards/internal.guard';
 
 @Controller('auth')
+@UseGuards(InternalGuard)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

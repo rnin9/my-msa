@@ -6,10 +6,13 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
+import { InternalGuard } from '@shared/internal/guards/internal.guard';
 import { CreateUserDto } from '@users/dto/request/create-user.dto';
 import { UsersService } from '@users/users.service';
 
+@UseGuards(InternalGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
