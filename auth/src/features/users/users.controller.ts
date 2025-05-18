@@ -11,6 +11,7 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common';
+import { Role } from '@shared/enum/role.enum';
 import { CreateUserDto } from '@users/dto/request/create-user.dto';
 import { UsersService } from '@users/users.service';
 
@@ -24,14 +25,14 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.Admin)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.Admin)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -47,7 +48,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
