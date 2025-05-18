@@ -3,10 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@auth/auth.controller';
 import { AuthService } from '@auth/auth.service';
 import { UsersModule } from '@users/users.module';
+import { SharedModule } from '@shared/shared.module';
 
 // TODO: refresh token 관린
 @Module({
   imports: [
+    SharedModule,
     UsersModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
