@@ -1,14 +1,27 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '@users/users.service';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { UserService } from '@users/user.service';
 import { SignInDto } from '@auth/dto/request/sign-in.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Role } from '@shared/enum/role.enum';
+import { SignOutDto } from './dto/request/sign-out.dto';
+
+interface JwtPayload {
+  sub: string;
+  username: string;
+  email: string;
+  roles: Array<Role>;
+}
 
 @Injectable()
 export class AuthService {
-  private refreshTokensStore = new Map<string, bigint>();
+  private refreshTokensStore = new Map<string, string>();
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -16,10 +29,10 @@ export class AuthService {
     signInDto: SignInDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = signInDto;
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.userService.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new NotFoundException('emails not found emails');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -27,10 +40,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = {
-      sub: user._id,
+    const payload: JwtPayload = {
+      sub: String(user._id),
+      email: user.email,
       username: user.name,
-      roles: user.role,
+      roles: user.roles,
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -46,7 +60,9 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  signOut(userId: bigint): boolean {
+  signOut(signOutDto: SignOutDto): boolean {
+    const { userId } = signOutDto;
+
     for (const [token, uid] of this.refreshTokensStore.entries()) {
       if (uid === userId) {
         this.refreshTokensStore.delete(token);

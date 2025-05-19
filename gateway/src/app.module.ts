@@ -9,9 +9,9 @@ import { SharedModule } from '@shared/shared.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    SharedModule,
     UserModule,
     AuthModule,
-    SharedModule,
   ],
   controllers: [],
   providers: [],

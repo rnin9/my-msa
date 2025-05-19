@@ -2,25 +2,36 @@ import {
   Injectable,
   Logger,
   InternalServerErrorException,
+  HttpException,
 } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
-import { SERVICE_MAP } from './constants/service-map';
 import { HttpService } from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Request } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProxyService {
   private readonly logger = new Logger(ProxyService.name);
 
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async forwardRequest<T = any>(
     authorization: string,
     req: Request,
     domain: string,
   ): Promise<{ status: number; data: T }> {
-    const baseUrl = SERVICE_MAP[domain];
+    const SERVICE_MAP: Record<string, string> = {
+      auth: this.configService.get('AUTH_BE_URL') || 'AUTH',
+      users: this.configService.get('AUTH_BE_URL') || 'AUTH',
+      events: this.configService.get('EVENT_BE_URL') || 'EVENT',
+    };
+
+    const baseUrl = SERVICE_MAP[`${domain}`];
+
     if (!baseUrl) {
       this.logger.error(`Invalid domain: ${domain}`);
       throw new InternalServerErrorException(
@@ -28,19 +39,19 @@ export class ProxyService {
       );
     }
 
-    const { method, originalUrl, headers, body, query } = req;
+    const { method, originalUrl, query, body } = req;
+
     const url = `${baseUrl}${originalUrl}`;
 
     const config: AxiosRequestConfig = {
       method: method.toLowerCase() as any,
       url,
       headers: {
-        ...headers,
+        'Content-Type': 'application/json',
         Authorization: authorization,
       },
-      params: query,
-      data: body,
-      validateStatus: () => true,
+      params: query ? query : undefined,
+      data: body ? body : undefined,
     };
 
     try {
@@ -55,9 +66,19 @@ export class ProxyService {
     } catch (error) {
       this.logger.error(
         `Proxy error to ${url}`,
-        error?.response?.data || error?.message,
+        error?.response?.data,
+        error?.message,
       );
-      throw new InternalServerErrorException('Gateway proxy failed');
+
+      if (error.response) {
+        // Axios HTTP 에러 응답 처리
+        const status = error.response.status;
+        const data = error.response.data;
+
+        throw new HttpException(data, status);
+      } else {
+        throw new InternalServerErrorException('Gateway proxy failed', error);
+      }
     }
   }
 }

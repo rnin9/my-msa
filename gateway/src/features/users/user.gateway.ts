@@ -7,11 +7,12 @@ import {
   BadRequestException,
   Delete,
   Patch,
+  Body,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '@shared/decorators/roles.decorator';
 import { Role } from '@shared/enum/role.enum';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/guards/roles.guard';
 import { AuthRequest } from '@shared/interface/auth-request.interface';
 import { ProxyService } from '@shared/proxy/proxy.service';
@@ -35,34 +36,34 @@ export class UserGateway {
   }
 
   @Post()
-  create(@Req() req: Request) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  async create(@Req() req: Request) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Get()
-  findAll(@Req() req: AuthRequest) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  async findAll(@Req() req: AuthRequest) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Get(':id')
-  findOne(@Req() req: AuthRequest) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  @Get('/:id')
+  async findOne(@Req() req: AuthRequest) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 
-  @UseGuards(AuthGuard)
-  @Patch(':id')
-  update(@Req() req: AuthRequest) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  @UseGuards(JwtAuthGuard)
+  @Patch('/:id')
+  async update(@Req() req: AuthRequest) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Delete(':id')
-  remove(@Req() req: AuthRequest) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  @Delete('/:id')
+  async remove(@Req() req: AuthRequest) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 }

@@ -8,4 +8,4 @@ import { UserGateway } from '@users/user.gateway';
   providers: [],
   exports: [],
 })
-export class UserModule {}
+export class EventModule {}

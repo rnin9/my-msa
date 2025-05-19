@@ -23,7 +23,7 @@ export class EventGateway {
   }
 
   @Post()
-  create(@Req() req: Request) {
-    return this.proxyService.forwardRequest(this.kms, req, 'user');
+  async create(@Req() req: Request) {
+    return this.proxyService.forwardRequest(this.kms, req, 'users');
   }
 }

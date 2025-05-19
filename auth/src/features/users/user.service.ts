@@ -13,7 +13,7 @@ import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from '@users/dto/request/create-user.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -31,6 +31,9 @@ export class UsersService {
           '해당 이메일로 가입된 사용자가 이미 존재합니다.',
         );
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      console.error({ error });
 
       throw new InternalServerErrorException();
     }
@@ -64,7 +67,7 @@ export class UsersService {
     const isSame =
       (updateUserDto.name ?? existingUser.name) === existingUser.name &&
       (updateUserDto.email ?? existingUser.email) === existingUser.email &&
-      (updateUserDto.role ?? existingUser.role) === existingUser.role &&
+      (updateUserDto.roles ?? existingUser.roles) === existingUser.roles &&
       isSamePassword;
 
     if (isSame) {

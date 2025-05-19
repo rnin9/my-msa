@@ -1,5 +1,4 @@
-// dto/response/sign-in-response.dto.ts
-export class SignInResponseDto {
+export interface SignInResponseDto {
   accessToken: string;
   refreshToken?: string;
 }
