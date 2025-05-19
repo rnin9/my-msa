@@ -4,6 +4,7 @@ import { UserModule } from '@users/user.module';
 import { AuthModule } from '@auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { EventModule } from '@events/event.module';
+import { RewardModule } from '@rewards/reward.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EventModule } from '@events/event.module';
     UserModule,
     AuthModule,
     EventModule,
+    RewardModule,
   ],
   controllers: [],
   providers: [],

@@ -19,8 +19,8 @@ import { ProxyService } from '@shared/proxy/proxy.service';
 import { Request } from 'express';
 
 @UseGuards(JwtAuthGuard)
-@Controller('events')
-export class EventGateway {
+@Controller('rewards')
+export class RewardGateway {
   private readonly kms: string;
 
   constructor(
@@ -42,22 +42,17 @@ export class EventGateway {
   @Roles(Role.Admin, Role.Operator)
   @Post()
   async create(@Req() req: AuthRequest) {
-    req.body = {
-      ...req.body,
-      actantId: req.user.id,
-    };
-
-    return this.proxyService.forwardRequest(this.kms, req, 'events');
+    return this.proxyService.forwardRequest(this.kms, req, 'rewards');
   }
 
   @Get()
   async findAll(@Req() req: Request) {
-    return this.proxyService.forwardRequest(this.kms, req, 'events');
+    return this.proxyService.forwardRequest(this.kms, req, 'rewards');
   }
 
   @Get(':id')
   async findOne(@Req() req: Request) {
-    return this.proxyService.forwardRequest(this.kms, req, 'events');
+    return this.proxyService.forwardRequest(this.kms, req, 'rewards');
   }
 
   @UseGuards(RolesGuard)
@@ -69,7 +64,7 @@ export class EventGateway {
       actantId: req.user.id,
     };
 
-    return this.proxyService.forwardRequest(this.kms, req, 'events');
+    return this.proxyService.forwardRequest(this.kms, req, 'rewards');
   }
 
   @UseGuards(RolesGuard)
@@ -81,6 +76,6 @@ export class EventGateway {
       actantId: req.user.id,
     };
 
-    return this.proxyService.forwardRequest(this.kms, req, 'events');
+    return this.proxyService.forwardRequest(this.kms, req, 'rewards');
   }
 }
