@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from '@users/user.module';
 import { AuthModule } from '@auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
+import { EventModule } from '@events/event.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SharedModule } from '@shared/shared.module';
     SharedModule,
     UserModule,
     AuthModule,
+    EventModule,
   ],
   controllers: [],
   providers: [],

@@ -2,10 +2,8 @@
   "extends": "./tsconfig.json",
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
   "paths": {
-    "@proxy/*": ["features/proxy/*"],
-    "@auth/*": ["features/auth/*"],
-    "@users/*": ["features/users/*"],
     "@events/*": ["features/events/*"],
+    "@rewards/*": ["features/rewards/*"],
     "@shared/*": ["shared/*"]
   }
 }

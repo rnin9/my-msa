@@ -18,10 +18,8 @@
     "noFallthroughCasesInSwitch": false,
     "baseUrl": "src",
     "paths": {
-      "@proxy/*": ["features/proxy/*"],
-      "@auth/*": ["features/auth/*"],
-      "@users/*": ["features/users/*"],
       "@events/*": ["features/events/*"],
+      "@rewards/*": ["features/rewards/*"],
       "@shared/*": ["shared/*"]
     }
   }

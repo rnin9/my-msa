@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SharedModule } from '@shared/shared.module';
-import { UserGateway } from '@users/user.gateway';
+import { EventGateway } from '@events/event.gateway';
 
 @Module({
   imports: [SharedModule],
-  controllers: [UserGateway],
+  controllers: [EventGateway],
   providers: [],
   exports: [],
 })
