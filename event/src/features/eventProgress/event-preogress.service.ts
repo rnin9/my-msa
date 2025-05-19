@@ -1,22 +1,12 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { EventProgress } from './schemas/event-progress.schema';
 import { CreateEventProgressDto } from './dto/request/create-event-progress.dto';
 import { UpdateEventProgressDto } from './dto/request/update-event-progress.dto';
-import { EventType } from '@shared/enum/event.enum';
 import { Event } from '@events/schemas/event.schema';
-import {
-  AttendanceProgress,
-  CouponProgress,
-  EventProgressPayload,
-  ReferralProgress,
-  SpecialProgress,
-} from '@eventProgress/dto/eventProgress.dto';
+import { EventProgressUpdater } from './utils/event-progress-updator';
+import { EventConditionEvaluator } from './utils/event-progress-evaluator';
 
 @Injectable()
 export class EventProgressService {
@@ -55,18 +45,22 @@ export class EventProgressService {
     const progressEntity = await this.eventProgressModel.findById(id);
     if (!progressEntity) throw new NotFoundException('EventProgress not found');
 
-    const event = await this.eventModel.findById(progressEntity.eventId);
-    if (!event) throw new NotFoundException('Linked Event not found');
+    const eventEntity = await this.eventModel.findById(progressEntity.eventId);
+    if (!eventEntity) throw new NotFoundException('Linked Event not found');
 
     const updatedProgress = updateEventProgressDto.progress
-      ? this.processProgressUpdate(
-          event,
+      ? EventProgressUpdater.update(
+          eventEntity,
           progressEntity.progress,
           updateEventProgressDto.progress,
         )
       : progressEntity.progress;
 
     progressEntity.progress = updatedProgress;
+    progressEntity.isCompleted = EventConditionEvaluator.isCompleted(
+      progressEntity.progress,
+      eventEntity.condition,
+    );
 
     const saved = await progressEntity.save();
 
@@ -78,94 +72,5 @@ export class EventProgressService {
     const result = await this.eventProgressModel.findByIdAndDelete(id).exec();
 
     if (!result) throw new NotFoundException('Event not found');
-  }
-
-  private processProgressUpdate(
-    event: Event,
-    currentProgress: EventProgressPayload,
-    incomingProgress: EventProgressPayload,
-  ): EventProgressPayload {
-    switch (event.type) {
-      case EventType.Attendance: {
-        const progress: AttendanceProgress = {
-          ...currentProgress,
-        } as AttendanceProgress;
-
-        const date: string =
-          'date' in incomingProgress &&
-          typeof incomingProgress.date === 'string'
-            ? incomingProgress.date
-            : '';
-
-        if (date) {
-          const dates = progress.attendanceDates || [];
-          if (!dates.includes(date)) {
-            dates.push(date);
-            dates.sort();
-
-            progress.attendanceDates = dates;
-            progress.consecutiveDays = this.calculateConsecutiveDays(dates);
-          }
-        }
-        return progress;
-      }
-
-      case EventType.Referral: {
-        const progress: ReferralProgress = {
-          ...currentProgress,
-        } as ReferralProgress;
-
-        progress.referralCount = (progress.referralCount || 0) + 1;
-        return progress;
-      }
-      case EventType.Coupon: {
-        const progress: CouponProgress = {
-          ...currentProgress,
-        } as CouponProgress;
-
-        const code =
-          'couponCode' in incomingProgress && incomingProgress?.couponCode;
-
-        if (code) {
-          progress.couponCode = code;
-          progress.isUsed = true;
-        }
-        return progress;
-      }
-
-      case EventType.Special: {
-        const progress: SpecialProgress = {
-          ...currentProgress,
-        } as SpecialProgress;
-
-        progress.achieved = true;
-
-        return progress;
-      }
-      default:
-        throw new BadRequestException('Unsupported event type');
-    }
-  }
-
-  private calculateConsecutiveDays(dates: string[]): number {
-    if (dates.length === 0) return 0;
-
-    // 날짜 정렬
-    const sorted = dates
-      .map((date) => new Date(date))
-      .sort((a, b) => a.getTime() - b.getTime());
-
-    let count = 1;
-    for (let i = 1; i < sorted.length; i++) {
-      const diff =
-        (sorted[i].getTime() - sorted[i - 1].getTime()) / (1000 * 60 * 60 * 24);
-      if (diff === 1) {
-        count++;
-      } else if (diff > 1) {
-        count = 1;
-      }
-    }
-
-    return count;
   }
 }

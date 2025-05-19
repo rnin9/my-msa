@@ -15,7 +15,7 @@ import { EventProgressService } from '@eventProgress/event-preogress.service';
 import { UpdateEventProgressDto } from '@eventProgress/dto/request/update-event-progress.dto';
 
 @UseGuards(InternalGuard)
-@Controller('events')
+@Controller('eventProgress')
 export class EventProgressController {
   constructor(private readonly eventProgressService: EventProgressService) {}
 

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EventType } from '@shared/enum/event.enum';
+import { EventCondition } from '@events/dto/event.dto';
 
 export type EventDocument = Event & Document;
 
@@ -22,7 +23,7 @@ export class Event {
   actantId: string;
 
   @Prop({ required: true, type: Object })
-  condition: Record<string, any>;
+  condition: EventCondition;
 
   @Prop({ required: true })
   startDate: Date;

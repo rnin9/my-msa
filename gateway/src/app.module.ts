@@ -5,6 +5,7 @@ import { AuthModule } from '@auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { EventModule } from '@events/event.module';
 import { RewardModule } from '@rewards/reward.module';
+import { EventProgressModule } from '@eventProgress/event-progress.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RewardModule } from '@rewards/reward.module';
     AuthModule,
     EventModule,
     RewardModule,
+    EventProgressModule,
   ],
   controllers: [],
   providers: [],
