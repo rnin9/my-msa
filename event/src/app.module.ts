@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EventModule } from '@events/events.module';
+import { EventModule } from '@events/event.module';
 import { SharedModule } from '@shared/shared.module';
+import { RewardModule } from '@rewards/reward.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SharedModule } from '@shared/shared.module';
     }),
     EventModule,
     SharedModule,
+    RewardModule,
   ],
   controllers: [],
   providers: [],

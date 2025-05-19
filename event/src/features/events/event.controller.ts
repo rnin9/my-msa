@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { EventService } from '@events/events.service';
+import { EventService } from '@events/event.service';
 import { CreateEventDto } from '@events/dto/request/create-event.dto';
 import { UpdateEventDto } from '@events/dto/request/update-event.dto';
 import { CreateEventResponse } from '@events/dto/response/create-event-response.dto';

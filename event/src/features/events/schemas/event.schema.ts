@@ -32,7 +32,7 @@ export class Event {
   endDate?: Date;
 
   @Prop({ default: true })
-  isActive: boolean;
+  isEnabled: boolean;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

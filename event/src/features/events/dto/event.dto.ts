@@ -8,5 +8,5 @@ export interface Event {
   condition?: Record<string, any>;
   startDate: string;
   endDate?: string;
-  isActive?: boolean;
+  isEnabled?: boolean;
 }

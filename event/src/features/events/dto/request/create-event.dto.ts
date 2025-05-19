@@ -37,5 +37,5 @@ export class CreateEventDto {
 
   @IsOptional()
   @IsBoolean()
-  isActive?: boolean;
+  isEnabled?: boolean;
 }
