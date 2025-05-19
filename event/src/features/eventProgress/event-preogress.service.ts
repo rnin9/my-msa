@@ -40,12 +40,17 @@ export class EventProgressService {
     id: string,
     updateEventProgressDto: UpdateEventProgressDto,
   ): Promise<EventProgress> {
-    if (!Types.ObjectId.isValid(id)) throw new NotFoundException('Invalid ID');
+    console.log({ id });
 
-    const progressEntity = await this.eventProgressModel.findById(id);
+    const progressId = new Types.ObjectId(id);
+
+    const progressEntity = await this.eventProgressModel.findById(progressId);
     if (!progressEntity) throw new NotFoundException('EventProgress not found');
 
-    const eventEntity = await this.eventModel.findById(progressEntity.eventId);
+    const eventId = new Types.ObjectId(progressEntity.eventId);
+
+    const eventEntity = await this.eventModel.findById(eventId);
+
     if (!eventEntity) throw new NotFoundException('Linked Event not found');
 
     const updatedProgress = updateEventProgressDto.progress

@@ -59,11 +59,6 @@ export class EventProgressGateway {
   @Roles(Role.Admin, Role.Operator)
   @Patch(':id')
   async update(@Req() req: AuthRequest) {
-    req.body = {
-      ...req.body,
-      actantId: req.user.id,
-    };
-
     return this.proxyService.forwardRequest(this.kms, req, 'eventProgress');
   }
 
