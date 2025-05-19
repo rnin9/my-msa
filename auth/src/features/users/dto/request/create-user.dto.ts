@@ -1,7 +1,7 @@
 // src/features/users/dto/create-user.dto.ts
 
+import { Role } from '@shared/enum/role.enum';
 import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
-import { Role } from 'src/shared/enum/role.enum';
 
 export class CreateUserDto {
   @IsString()
@@ -16,7 +16,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
   @IsNotEmpty()
-  role: Role;
+  roles: Array<Role>;
 }

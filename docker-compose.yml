@@ -1,0 +1,44 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  auth-server:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    container_name: auth-server
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    env_file:
+      - ./auth/.env.extra
+    networks:
+      - app-network
+
+  gateway-server:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: gateway-server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-server
+    env_file:
+      - ./gateway/.env.extra
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,4 +1,3 @@
-// dto/response/sign-in-response.dto.ts
-export class SignOutResponseDto {
+export interface SignOutResponseDto {
   data: boolean;
 }

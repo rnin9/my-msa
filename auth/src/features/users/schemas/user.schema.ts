@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Role } from '@shared/enum/role.enum';
+import { IsEnum } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -15,8 +16,9 @@ export class User extends Document {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ type: String, enum: Role, default: Role.User })
-  role: Role;
+  @IsEnum(Role, { each: true })
+  @Prop({ required: true })
+  roles: Array<Role>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -7,7 +7,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { AuthRequest } from '@shared/interface/auth-request.interface';
 import { ProxyService } from '@shared/proxy/proxy.service';
 import { Request } from 'express';
@@ -29,26 +29,40 @@ export class AuthGateway {
     this.kms = kms;
   }
 
-  @UseGuards(AuthGuard)
-  @Get('my')
+  @UseGuards(JwtAuthGuard)
+  @Get('/my')
   getMyInfo(@Req() req: AuthRequest) {
-    return this.proxyService.forwardRequest(this.kms, req, 'auth');
+    return req.user;
   }
 
-  @Post('sign-in')
+  @Post('/sign-in')
   async signIn(@Req() req: Request) {
     return this.proxyService.forwardRequest(this.kms, req, 'auth');
   }
 
-  @UseGuards(AuthGuard)
-  @Post('sign-out')
-  async signOut(@Req() req: AuthRequest): Promise<void> {
-    await this.proxyService.forwardRequest(this.kms, req, 'auth');
+  @UseGuards(JwtAuthGuard)
+  @Post('/sign-out')
+  async signOut(@Req() req: AuthRequest) {
+    req.body = {
+      ...req.body,
+      userId: req.user.id,
+    };
+
+    return this.proxyService.forwardRequest(this.kms, req, 'auth');
   }
 
-  @UseGuards(AuthGuard)
-  @Post('verify-token')
+  @UseGuards(JwtAuthGuard)
+  @Post('/verify-token')
   async verifyToken(@Req() req: AuthRequest) {
+    if (!req.headers['authorization']) {
+      throw new BadRequestException('bearer token이  누락되었습니다.');
+    }
+
+    req.body = {
+      ...req.body,
+      token: req.headers['authorization'].replace(/^Bearer\s+/i, ''),
+    };
+
     return this.proxyService.forwardRequest(this.kms, req, 'auth');
   }
 }
