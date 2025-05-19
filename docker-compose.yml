@@ -36,6 +36,20 @@ services:
     networks:
       - app-network
 
+  event-server:
+    build:
+      context: ./event
+      dockerfile: Dockerfile
+    container_name: event-server
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongo
+    env_file:
+      - ./event/.env.extra
+    networks:
+      - app-network
+
 volumes:
   mongo-data:
 

@@ -9,8 +9,6 @@ RUN npm install
 
 COPY .env.extra .env
 
-RUN echo "======= .env content =======" && cat .env
-
 COPY . .
 
 RUN npm run build

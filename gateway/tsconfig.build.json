@@ -5,7 +5,7 @@
     "@proxy/*": ["features/proxy/*"],
     "@auth/*": ["features/auth/*"],
     "@users/*": ["features/users/*"],
-    "@events/*": ["features/events/"],
+    "@events/*": ["features/events/*"],
     "@shared/*": ["shared/*"]
   }
 }
