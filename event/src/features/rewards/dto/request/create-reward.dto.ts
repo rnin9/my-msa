@@ -1,16 +1,15 @@
 import { RewardType } from '@shared/enum/reward.enum';
 import {
-  IsMongoId,
   IsNumber,
   IsBoolean,
   IsOptional,
   IsEnum,
+  IsString,
 } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class CreateRewardDto {
-  @IsMongoId()
-  eventId: Types.ObjectId;
+  @IsString()
+  eventId: string;
 
   @IsEnum(RewardType)
   rewardType: RewardType;
