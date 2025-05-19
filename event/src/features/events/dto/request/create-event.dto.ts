@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 import { EventType } from '@shared/enum/event.enum';
 import { Prop } from '@nestjs/mongoose';
+import { EventCondition } from '../event.dto';
 
 export class CreateEventDto {
   @IsString()
@@ -17,16 +18,16 @@ export class CreateEventDto {
   @IsString()
   description: string;
 
-  @IsEnum(EventType, { each: true })
+  @IsEnum(EventType)
   @Prop({ required: true })
-  eventType: Array<EventType>;
+  type: EventType;
 
   @IsString()
   actantId: string;
 
   @IsOptional()
   @IsObject()
-  condition?: Record<string, any>;
+  condition: EventCondition;
 
   @IsDateString()
   startDate: string;

@@ -18,6 +18,7 @@
     "noFallthroughCasesInSwitch": false,
     "baseUrl": "src",
     "paths": {
+      "@eventProgress/*": ["features/eventProgress/*"],
       "@events/*": ["features/events/*"],
       "@rewards/*": ["features/rewards/*"],
       "@shared/*": ["shared/*"]

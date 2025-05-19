@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventModule } from '@events/event.module';
 import { SharedModule } from '@shared/shared.module';
 import { RewardModule } from '@rewards/reward.module';
+import { EventProgressModule } from '@eventProgress/event-progress.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RewardModule } from '@rewards/reward.module';
     EventModule,
     SharedModule,
     RewardModule,
+    EventProgressModule,
   ],
   controllers: [],
   providers: [],

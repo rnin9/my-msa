@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
   "paths": {
+    "@eventProgress/*": ["features/eventProgress/*"],
     "@events/*": ["features/events/*"],
     "@rewards/*": ["features/rewards/*"],
     "@shared/*": ["shared/*"]
