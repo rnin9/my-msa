@@ -40,8 +40,6 @@ export class EventProgressService {
     id: string,
     updateEventProgressDto: UpdateEventProgressDto,
   ): Promise<EventProgress> {
-    console.log({ id });
-
     const progressId = new Types.ObjectId(id);
 
     const progressEntity = await this.eventProgressModel.findById(progressId);
