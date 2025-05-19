@@ -13,11 +13,10 @@ export class Event {
   description?: string;
 
   @Prop({
-    type: [String],
     enum: EventType,
-    default: [EventType.Anytime],
+    default: EventType,
   })
-  type: Array<EventType>;
+  type: EventType;
 
   @Prop({ required: true })
   actantId: string;

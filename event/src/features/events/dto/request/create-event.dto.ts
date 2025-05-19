@@ -17,9 +17,9 @@ export class CreateEventDto {
   @IsString()
   description: string;
 
-  @IsEnum(EventType, { each: true })
+  @IsEnum(EventType)
   @Prop({ required: true })
-  eventType: Array<EventType>;
+  type: EventType;
 
   @IsString()
   actantId: string;
