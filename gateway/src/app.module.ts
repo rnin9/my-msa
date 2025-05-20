@@ -6,6 +6,7 @@ import { SharedModule } from '@shared/shared.module';
 import { EventModule } from '@events/event.module';
 import { RewardModule } from '@rewards/reward.module';
 import { EventProgressModule } from '@eventProgress/event-progress.module';
+import { InitModule } from 'features/init/init.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { EventProgressModule } from '@eventProgress/event-progress.module';
     EventModule,
     RewardModule,
     EventProgressModule,
+    InitModule,
   ],
   controllers: [],
   providers: [],

@@ -5,7 +5,7 @@ export interface Event {
   description: string;
   eventType: EventType;
   actantId: string;
-  condition?: Record<string, any>;
+  condition?: EventCondition;
   startDate: string;
   endDate?: string;
   isEnabled?: boolean;

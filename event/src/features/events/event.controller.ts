@@ -19,6 +19,11 @@ import { InternalGuard } from '@shared/internal/guards/internal.guard';
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
+  @Post('/init')
+  async initialize() {
+    return await this.eventService.initialize();
+  }
+
   @Post()
   async create(
     @Body() createEventDto: CreateEventDto,
