@@ -6,7 +6,7 @@ export type EventProgressDocument = EventProgress & Document;
 
 @Schema({ timestamps: true })
 export class EventProgress {
-  @Prop({ required: true, ref: 'User' })
+  @Prop({ required: true })
   userId: string;
 
   @Prop({ required: true, ref: 'Event' })

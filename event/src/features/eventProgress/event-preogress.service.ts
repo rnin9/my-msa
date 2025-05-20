@@ -28,8 +28,9 @@ export class EventProgressService {
   }
 
   async findOne(id: string): Promise<EventProgress> {
-    if (!Types.ObjectId.isValid(id)) throw new NotFoundException('Invalid ID');
-    const event = await this.eventProgressModel.findById(id).exec();
+    const progressId = new Types.ObjectId(id);
+
+    const event = await this.eventProgressModel.findById(progressId).exec();
 
     if (!event) throw new NotFoundException('Event not found');
 
@@ -71,8 +72,11 @@ export class EventProgressService {
   }
 
   async remove(id: string): Promise<void> {
-    if (!Types.ObjectId.isValid(id)) throw new NotFoundException('Invalid ID');
-    const result = await this.eventProgressModel.findByIdAndDelete(id).exec();
+    const progressId = new Types.ObjectId(id);
+
+    const result = await this.eventProgressModel
+      .findByIdAndDelete(progressId)
+      .exec();
 
     if (!result) throw new NotFoundException('Event not found');
   }
