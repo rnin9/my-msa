@@ -38,8 +38,6 @@ export class EventProgressGateway {
     this.kms = kms;
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.Admin, Role.Operator)
   @Post()
   async create(@Req() req: AuthRequest) {
     return this.proxyService.forwardRequest(this.kms, req, 'eventProgress');
@@ -55,15 +53,13 @@ export class EventProgressGateway {
     return this.proxyService.forwardRequest(this.kms, req, 'eventProgress');
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.Admin, Role.Operator)
   @Patch(':id')
   async update(@Req() req: AuthRequest) {
     return this.proxyService.forwardRequest(this.kms, req, 'eventProgress');
   }
 
   @UseGuards(RolesGuard)
-  @Roles(Role.Admin, Role.Operator)
+  @Roles(Role.Admin)
   @Delete(':id')
   async remove(@Req() req: AuthRequest) {
     req.body = {
