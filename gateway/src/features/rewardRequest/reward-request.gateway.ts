@@ -39,24 +39,26 @@ export class RewardRequestGateway {
   }
 
   @UseGuards(RolesGuard)
-  @Roles(Role.Admin, Role.Operator)
   @Post()
   async create(@Req() req: AuthRequest) {
     return this.proxyService.forwardRequest(this.kms, req, 'rewardRequest');
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin, Role.Auditor)
   @Get()
   async findAll(@Req() req: Request) {
     return this.proxyService.forwardRequest(this.kms, req, 'rewardRequest');
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin, Role.Auditor)
   @Get(':id')
   async findOne(@Req() req: Request) {
     return this.proxyService.forwardRequest(this.kms, req, 'rewardRequest');
   }
 
   @UseGuards(RolesGuard)
-  @Roles(Role.Admin, Role.Operator)
   @Patch(':id')
   async update(@Req() req: AuthRequest) {
     return this.proxyService.forwardRequest(this.kms, req, 'rewardRequest');
