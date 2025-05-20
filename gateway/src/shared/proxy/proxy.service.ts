@@ -30,6 +30,7 @@ export class ProxyService {
       events: this.configService.get('EVENT_BE_URL') || 'EVENT',
       rewards: this.configService.get('EVENT_BE_URL') || 'EVENT',
       eventProgress: this.configService.get('EVENT_BE_URL') || 'EVENT',
+      rewardRequest: this.configService.get('EVENT_BE_URL') || 'EVENT',
     };
 
     const baseUrl = SERVICE_MAP[`${domain}`];

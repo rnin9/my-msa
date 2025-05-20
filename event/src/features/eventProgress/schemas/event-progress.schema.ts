@@ -1,16 +1,16 @@
 import { EventProgressPayload } from '@eventProgress/dto/eventProgress.dto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type EventProgressDocument = EventProgress & Document;
 
 @Schema({ timestamps: true })
 export class EventProgress {
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
-  userId: Types.ObjectId;
+  @Prop({ required: true })
+  userId: string;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'Event' })
-  eventId: Types.ObjectId;
+  @Prop({ required: true, ref: 'Event' })
+  eventId: string;
 
   @Prop({ type: Object, default: {} })
   progress: EventProgressPayload;

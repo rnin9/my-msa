@@ -21,6 +21,7 @@
       "@eventProgress/*": ["features/eventProgress/*"],
       "@events/*": ["features/events/*"],
       "@rewards/*": ["features/rewards/*"],
+      "@rewardRequest/*": ["features/rewardRequest/*"],
       "@shared/*": ["shared/*"]
     }
   }

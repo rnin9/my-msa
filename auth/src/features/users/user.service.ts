@@ -11,10 +11,46 @@ import * as bcrypt from 'bcrypt';
 
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from '@users/dto/request/create-user.dto';
+import { Role } from '@shared/enum/role.enum';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  async initialize(): Promise<Array<User>> {
+    const usersToCreate: CreateUserDto[] = [
+      {
+        name: '일반 유저',
+        email: 'user@example.com',
+        password: '1',
+        roles: [Role.User],
+      },
+      {
+        name: '운영자 유저',
+        email: 'operator@example.com',
+        password: '2',
+        roles: [Role.Operator],
+      },
+      {
+        name: '관리자 유저',
+        email: 'admin@example.com',
+        password: '3',
+        roles: [Role.Admin],
+      },
+      {
+        name: 'Auditor 유저',
+        email: 'auditor@example.com',
+        password: '4',
+        roles: [Role.Auditor],
+      },
+    ];
+
+    const users = await Promise.all(
+      usersToCreate.map((user) => this.create(user)),
+    );
+
+    return users;
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {

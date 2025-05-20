@@ -23,6 +23,7 @@
       "@users/*": ["features/users/*"],
       "@events/*": ["features/events/*"],
       "@rewards/*": ["features/rewards/*"],
+      "@rewardRequest/*": ["features/rewardRequest/*"],
       "@eventProgress/*": ["features/eventProgress/*"],
       "@shared/*": ["shared/*"]
     }

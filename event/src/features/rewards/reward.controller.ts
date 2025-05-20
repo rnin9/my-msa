@@ -15,6 +15,11 @@ import { UpdateRewardDto } from './dto/request/update-reward.dto';
 export class RewardsController {
   constructor(private readonly rewardService: RewardService) {}
 
+  @Post('/init')
+  initialize(@Body() body: { eventIds: Array<string> }) {
+    return this.rewardService.initialize(body.eventIds);
+  }
+
   @Post()
   create(@Body() createRewardDto: CreateRewardDto) {
     return this.rewardService.create(createRewardDto);

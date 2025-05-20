@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { RewardType } from '@shared/enum/reward.enum';
-import { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Reward {
-  @Prop({ type: Types.ObjectId, ref: 'Event', required: true })
-  eventId: Types.ObjectId;
+  @Prop({ ref: 'Event', required: true })
+  eventId: string;
 
   @Prop({ required: true, enum: RewardType })
   rewardType: RewardType;
